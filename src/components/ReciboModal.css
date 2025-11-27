@@ -110,3 +110,26 @@
   font-size: 1.9rem !important; /* bigger text */
   font-weight: 700;             /* bold */
 }
+/* disable button look */
+.pay-btn.disabled {
+  background-color: #999 !important;
+  cursor: not-allowed !important;
+}
+
+/* spinner animation */
+.spinner {
+  width: 14px;
+  height: 14px;
+  border: 3px solid white;
+  border-top: 3px solid #444;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 6px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

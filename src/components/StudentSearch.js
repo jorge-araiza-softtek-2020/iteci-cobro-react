@@ -82,6 +82,24 @@ const StudentSearch = () => {
         alert(response.data); // shows the backend success message
         setModalOpen(false);
 
+        //codigo para descargar el pdf 
+        // 2. Download the PDF automatically with folio name
+        const pdfResponse = await fetch(`http://localhost:8080/api/students/recibo/pdf/${recibo.folio}`);
+        const blob = await pdfResponse.blob();
+        const url = window.URL.createObjectURL(blob);
+
+        const a = document.createElement("a");
+        a.href = url;
+
+        // ⭐ CUSTOM FILE NAME HERE
+        a.download = `Recibo_${recibo.folio}.pdf`;
+
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url);
+        //fin codigo que descargar pdf
+
       } catch (err) {
         console.error(err);
 

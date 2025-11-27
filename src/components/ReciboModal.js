@@ -1,23 +1,34 @@
-import React from "react";
+import React, { useState } from "react";
 import "./ReciboModal.css";
 
 const ReciboModal = ({ recibo, onClose, onPagar }) => {
-  if (!recibo) return null;
+  const [loading, setLoading] = useState(false);
 
+  if (!recibo) return null;
   const r = recibo;
 
+  const handlePagar = async () => {
+    setLoading(true);            // Show spinner + disable button
+
+    try {
+      await onPagar(r);          // Call parent async logic (DB + print)
+    } catch (err) {
+      console.error("Error al pagar:", err);
+      alert("Ocurrió un error al procesar el pago.");
+    }
+
+    setLoading(false);           // Restore UI
+  };
+
   return (
-    <div className="modal-overlay" onClick={onClose}>
+    <div className="modal-overlay" onClick={loading ? null : onClose}>
       <div className="modal" onClick={(e) => e.stopPropagation()}>
 
-        {/* Close button at top-right */}
-        <button className="close-x" onClick={onClose}>×</button>
+        <button className="close-x" onClick={loading ? null : onClose}>×</button>
 
-        <div className="recibo-titulo" >Recibo de Pago</div>
+        <div className="recibo-titulo">Recibo de Pago</div>
 
         <div className="modal-content">
-
-          {/* TABLE INSTEAD OF <p> TAGS */}
           <table className="recibo-table">
             <tbody>
               <tr className="monto-row">
@@ -58,12 +69,23 @@ const ReciboModal = ({ recibo, onClose, onPagar }) => {
               </tr>
             </tbody>
           </table>
-
         </div>
 
-        {/* Pagar button */}
-        <button className="pay-btn" onClick={() => onPagar(r)}>
-          💳 Pagar
+        {/* PAY BUTTON WITH LOADING STATE */}
+        <button
+          className={`pay-btn ${loading ? "disabled" : ""}`}
+          onClick={loading ? null : handlePagar}
+          disabled={loading}
+        >
+          {loading ? (
+            <>
+              <span className="spinner"></span> Procesando...
+            </>
+          ) : (
+            <>
+              💳 Pagar
+            </>
+          )}
         </button>
 
       </div>
