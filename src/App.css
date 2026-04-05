@@ -22,3 +22,22 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+/* MAIN CONTAINER: image left, text on the right */
+.header-container {
+  display: flex;            /* <-- THIS keeps image LEFT */
+  flex-direction: row;      /* <-- important: horizontal */
+  align-items: flex-start;
+  gap: 30px;
+}
+
+/* RIGHT SIDE: stacked vertically */
+.header-right {
+  display: flex;
+  flex-direction: column;   /* vertical stacking */
+  gap: 10px;
+}
+
+.header-right input {
+  width: 250px;
+  padding: 6px;
+}
